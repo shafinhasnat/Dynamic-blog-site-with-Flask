@@ -1,0 +1,11 @@
+{% extends 'layout.html'%}
+{% block content %}
+<table border="1">
+{% for uid,pss in user.items() %}
+    <tr>
+    <th>{{ uid }}</th>
+    <td>{{ pss }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
