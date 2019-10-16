@@ -1,6 +1,6 @@
 from flask import Flask, escape, request, render_template,flash,redirect,url_for
 from flaskblog import app,db,bcrypt
-from flaskblog.forms import LoginForm, SignupForm
+from flaskblog.forms import LoginForm, SignupForm, PostForm
 from flaskblog.models import User, Post
 from flask_login import login_user,LoginManager,current_user,logout_user,login_required
 from PIL import Image
@@ -55,20 +55,39 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/account')
+
+# def make_post():
+#     form = PostForm()
+#     if form.validate_on_submit():
+#         post = Post(title = form.title.data, content = 'form.content.data',user_id=current_user.id)
+#         db.session.add(post)
+#         db.session.commit()
+#         return redirect(url_for('home')) 
+
+@app.route('/account',methods=['GET','POST'])
 @login_required
 def account():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title = form.title.data, content = form.content.data,user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('home')) 
+    # make_post()
     image_file = url_for('static', filename='profile_pic/' + current_user.image_file)
-    return render_template('account.html',title=current_user.username, image_file=image_file)
+    posts = Post.query.filter_by(user_id=current_user.id)
+    return render_template('account.html',title=current_user.username, image_file=image_file, form=form,posts=posts)
 
 
-@app.route('/blog/<string:blog_id>')
-def blogpost(blog_id):
-    return 'This is the blog post number '+ blog_id
 
-@app.route('/')
+
+@app.route('/',methods=['GET','POST'])
 def home():
-    dictionary=[{'Title':'Lorem ipsam','Author':'Shafin Hasnat', 'Date':'10-10-10' ,'Content':'abba mma' },
-                {'Title':'Ipsum Lorem','Author':'Aseer Arman','Date':'10-12-10' ,'Content':'abba amma nana'}]
-    lists=['shafin','hasnat','aseer','arman']
-    return render_template('webpage.html', title='home',author='Aseer Arman',weather='rainy',posts=dictionary,lists=lists)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title = form.title.data, content = form.content.data,user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('home'))
+    posts = Post.query.all() 
+    return render_template('home.html', title='home',form=form, posts=posts)

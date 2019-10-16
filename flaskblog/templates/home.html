@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if current_user.is_active %}
+<div class='content-section'>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <h3 class="border-bottom mb-4">Write a post</h3>
+    <div class="form-group">
+                        {{ form.title.label(class="form-control-label") }}
+
+                        {% if form.title.errors %}
+                            {{ form.title(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.title.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.title(class="form-control", placeholder="") }}
+                        {% endif %}
+        
+    </div>
+    <div class="form-group">
+                        {{ form.content.label(class="form-control-label") }}
+
+                        {% if form.content.errors %}
+                            {{ form.content(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.content.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.content(class="form-control",  rows="4", placeholder="What's on your mind?") }}
+                        {% endif %}
+     </div>
+     <div class="form-group">
+      {{ form.submit(class="btn btn-primary mt-2") }}
+      </div>
+  </form>
+</div>
+{% endif %}
+{% for post in posts%}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+          </div>
+        </article>
+{% endfor %}
+{% endblock  %}
