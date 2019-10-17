@@ -8,6 +8,9 @@ app.config['SECRET_KEY'] = 'shafinsblog'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['DATABASE_URL'] = 'sqlite:///site.db'
 db=SQLAlchemy(app)
+############pore add kora hoise
+db.create_all()
+##############
 bcrypt= Bcrypt()
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
