@@ -16,7 +16,7 @@ app.config['SECRET_KEY'] = 'shafinsblog'
 
 
 
-ENV = 'live_on_heroku'
+ENV = 'dev'
 
 if ENV == 'dev':
     app.debug = True
