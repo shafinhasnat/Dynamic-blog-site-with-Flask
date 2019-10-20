@@ -8,8 +8,8 @@ import os
 import secrets
 
 def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    picture_fn = 'profile_pic_'+random_hex+'_'+form_picture.filename
+    random_hex = secrets.token_hex(4)
+    picture_fn = random_hex+'_'+form_picture.filename
     picture_path = os.path.join(app.root_path,"static/profile_pic",picture_fn)
     i = Image.open(form_picture)
     i.save(picture_path)
